@@ -9,8 +9,9 @@ const allUsers: any = {};
 
 io.on("connection", (socket) => {
   const address = socket.handshake.address;
+  const socketId = socket.id;
 
-  console.log(`user connected from ${address}`);
+  console.log(`user connected from ${address} with id ${socketId}`);
 
   socket.on("login", function (data) {
     const username = data?.username;
@@ -23,6 +24,7 @@ io.on("connection", (socket) => {
     if (utils.isUsernameTaken(names, username))
       return socket.emit("login failed", "Username is taken");
 
+    console.log(`user ${username} logged in`);
     socket.emit("login success", username);
 
     names[socket.id] = data.username;
