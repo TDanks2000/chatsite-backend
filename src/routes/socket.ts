@@ -23,6 +23,8 @@ io.on("connection", (socket) => {
     if (utils.isUsernameTaken(names, username))
       return socket.emit("login failed", "Username is taken");
 
+    socket.emit("login success", username);
+
     names[socket.id] = data.username;
     allUsers[socket.id] = socket;
 
@@ -47,8 +49,12 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", function () {
     var room = rooms[socket.id];
+
+    if (!room) return;
+
     socket.broadcast.to(room).emit("chat end");
     var peerID = room.split("#");
+
     peerID = peerID[0] === socket.id ? peerID[1] : peerID[0];
     // current socket left, add the other one to the queue
     findPeerForLoneSocket(allUsers[peerID]);
