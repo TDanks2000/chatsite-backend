@@ -74,6 +74,16 @@ io.on("connection", (socket) => {
     // current socket left, add the other one to the queue
     findPeerForLoneSocket(allUsers[peerID]);
   });
+
+  socket.on("typing", function (data) {
+    var room = rooms[socket.id];
+    socket.broadcast.to(room).emit("typing", data);
+  });
+
+  socket.on("stop typing", function () {
+    var room = rooms[socket.id];
+    socket.broadcast.to(room).emit("stop typing");
+  });
 });
 
 const findPeerForLoneSocket = (socket: Socket) => {
