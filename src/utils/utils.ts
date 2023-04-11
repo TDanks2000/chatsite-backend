@@ -12,4 +12,8 @@ const isUsernameTaken = (names: any, username: string) => {
   return Object.values(names).includes(username);
 };
 
-export { formatDate, wordCount, isUsernameTaken };
+const generateMessageId = () => {
+  return Math.random().toString(17).substr(2, 9);
+};
+
+export { formatDate, wordCount, isUsernameTaken, generateMessageId };

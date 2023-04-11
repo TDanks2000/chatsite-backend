@@ -36,12 +36,25 @@ io.on("connection", (socket) => {
 
   socket.on("message", function (data) {
     var room = rooms[socket.id];
-    socket.broadcast.to(room).emit("message", data);
+
+    const sender = names[socket.id];
+
+    //create a message id
+    const messageId = utils.generateMessageId();
+
+    socket.broadcast
+      .to(room)
+      .emit("message", { sender, message: data, messageId });
   });
 
   socket.on("leave room", function () {
     var room = rooms[socket.id];
+
     socket.broadcast.to(room).emit("chat end");
+
+    // remove room from rooms list
+    delete rooms[socket.id];
+
     var peerID = room.split("#");
     peerID = peerID[0] === socket.id ? peerID[1] : peerID[0];
     // add both current and peer to the queue
