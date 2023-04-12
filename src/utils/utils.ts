@@ -16,4 +16,14 @@ const generateMessageId = () => {
   return Math.random().toString(17).substr(2, 9);
 };
 
-export { formatDate, wordCount, isUsernameTaken, generateMessageId };
+const checkToken = (token: string) => {
+  return token === (process.env.TOKEN as string);
+};
+
+export {
+  formatDate,
+  wordCount,
+  isUsernameTaken,
+  generateMessageId,
+  checkToken,
+};
